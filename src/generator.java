@@ -75,7 +75,7 @@ public class generator{
                     result = i;
                     break;
                 }
-            }
+            } 
         }
 
         //From tell list
