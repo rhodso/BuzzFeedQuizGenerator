@@ -1,5 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
-
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Random;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -21,6 +24,7 @@ public class BFQG {
 
     JFrame testFrame;
     JTextArea randomQuizTestLabel;
+    String slogan;
 
     void showHideFrame(boolean state) {
         testFrame.setVisible(state);
@@ -49,12 +53,14 @@ public class BFQG {
     }
 
     public BFQG() {
+        slogan = getSlogan();
+
         testFrame = new JFrame();
         testFrame.setSize(new Dimension(700, 500));
         testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testFrame.setLayout(new BorderLayout());
 
-        JLabel headerLabel = new JLabel("Welcome to the BuzzFeed quiz generator");
+        JLabel headerLabel = new JLabel("Welcome to the BuzzFeed quiz generator - " + slogan);
         testFrame.add(headerLabel, BorderLayout.PAGE_START);
 
         randomQuizTestLabel = new JTextArea();
@@ -85,6 +91,38 @@ public class BFQG {
         String[] quiz = quizGen.newQuiz();
         randomQuizTestLabel.setText(quiz[0] + " and we'll tell you " + quiz[1]);
         
+    }
+
+    String getSlogan(){
+        //Vars
+        BufferedReader br;
+        ArrayList<String> fileOut = new ArrayList<>(0);
+        String[] sloganList;
+        String s;
+
+        try{
+            //Read slogans
+            br = new BufferedReader(new FileReader(new File("assets/slogans.txt")));
+            s = br.readLine();
+            while(s != null)
+            {
+                fileOut.add(s);
+                s = br.readLine();
+            }
+            br.close();
+            //And add to the array
+            sloganList = new String[fileOut.size()];
+            for(int i = 0; i < fileOut.size(); i++){
+                sloganList[i] = fileOut.get(i);
+            }
+
+            Random rng = new Random();
+            return sloganList[rng.nextInt(sloganList.length)];
+
+        }
+        catch(Exception ex){
+            return "Who even needs slogans?";
+        }
     }
 
     public static void main(String[] args) {
