@@ -34,6 +34,7 @@ public class BFQG {
     JLabel randomQuizTestLabelPart2;
     JLabel randomQuizTestLabelPart3;
     String slogan;
+    JPanel randomQuizPanel;
 
 
     //Show or hide the frame
@@ -58,9 +59,8 @@ public class BFQG {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
-            JOptionPane j = new JOptionPane(
+            JOptionPane.showMessageDialog(testFrame,
                     "Something appears to have fucked up with the music.\nI'm not going to force you to restart but like, music and shit. Pls?");
-            j.setVisible(true);
         }
     }
 
@@ -77,13 +77,14 @@ public class BFQG {
 
         //HeaderPanel
         JPanel headerPanel = new JPanel();
+        headerPanel.setPreferredSize(new Dimension(700, 100));
         headerPanel.setLayout(new GridLayout(2,1));
         Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
         headerPanel.setBorder(padding);
 
         //Header label
         JLabel headerLabel = new JLabel("Welcome to the BuzzFeed quiz generator");
-        headerLabel.setFont(new Font(headerLabel.getFont().getName(), Font.PLAIN, 24));
+        headerLabel.setFont(new Font(headerLabel.getFont().getName(), Font.BOLD, 24));
         headerPanel.add(headerLabel);
         
         //Slogan label
@@ -94,11 +95,13 @@ public class BFQG {
         //Add testframe to headerpanel
         testFrame.add(headerPanel, BorderLayout.PAGE_START);
 
-        //RandomQuizPanel
-        JPanel randomQuizPanel = new JPanel();
+        //randomQuizPanel
+        randomQuizPanel = new JPanel();
         GridLayout randomQuizGridLayout = new GridLayout(3,1);
         randomQuizPanel.setLayout(randomQuizGridLayout);
         randomQuizGridLayout.setHgap(20);
+        randomQuizPanel.setSize(new Dimension(700,100));
+        randomQuizPanel.setPreferredSize((new Dimension(700,100)));
 
         //RandomQuizTestLabel P1
         randomQuizTestLabelPart1 = new JLabel("Label1", SwingConstants.CENTER);
@@ -116,12 +119,21 @@ public class BFQG {
         randomQuizPanel.add(randomQuizTestLabelPart3);
 
         //Add randomQuizPanel to testFrame
+        //randomQuizPanel.pack();
         testFrame.add(randomQuizPanel, BorderLayout.CENTER);
+        
+        
+        JPanel spacingPanel = new JPanel();
+        spacingPanel.setPreferredSize(new Dimension(700,200));
+        
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(700, 300));
+        buttonPanel.add(spacingPanel, BorderLayout.SOUTH);
+        
 
         //New Quiz Button
-        JButton newQuizButton = new JButton();
-        newQuizButton.setText("New quiz");
-        newQuizButton.setSize(new Dimension(100,100));
+        JButton newQuizButton = new JButton("New quiz");
         newQuizButton.addActionListener(new ActionListener() {
 
             //Action listener for newQuizButton
@@ -132,11 +144,50 @@ public class BFQG {
             
         });
 
-        //Add newQuizButton to testFrame
-        testFrame.add(newQuizButton, BorderLayout.PAGE_END);
+        //customQuiz button
+        JButton customQuizButton = new JButton("Custom Quiz");
+        customQuizButton.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                customQuizButtonAction();
+            }
+        });
+
+        //About button
+        JButton aboutButton = new JButton("About the quiz");
+        aboutButton.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                aboutButtonAction();
+            }
+        });
+
+        //Secret Button
+        JButton secretButton = new JButton("(Secret Button)");
+        secretButton.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                secretButtonAction();
+            }
+        });
+
+        secretButton.setFont(new Font(secretButton.getFont().getName(), Font.BOLD, secretButton.getFont().getSize()));
+
+        //Add newQuizButton
+        buttonPanel.add(newQuizButton);
+
+        buttonPanel.add(customQuizButton);
+        buttonPanel.add(aboutButton);
+        buttonPanel.add(secretButton);
+
+        //Add buttonPanel to testFrame
+        testFrame.add(buttonPanel, BorderLayout.PAGE_END);
 
         //Generate a new quiz, then start playing music
-        //newQuizButtonAction();
+        newQuizButtonAction();
         playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
     }
 
@@ -148,6 +199,20 @@ public class BFQG {
         randomQuizTestLabelPart1.setText(quiz[0]);
         randomQuizTestLabelPart2.setText(" and we'll tell you ");        
         randomQuizTestLabelPart3.setText(quiz[1]);
+    }
+
+    void customQuizButtonAction(){;
+        
+    }
+
+    void aboutButtonAction(){
+        JOptionPane.showMessageDialog(testFrame,
+            "This quiz was created by Richard Rhodes because he got bored\nIt creates a random quiz based on a 'pick' list, as in 'Pick\nyour ideal X', and a 'tell' list, as in 'and we'll tell you\nwhat X you are'. This means that the quiz comes up with a\nrandom quiz. It was made to mimic, and hence mock, the actual\nBuzzFeed quizzes, but was made so that there were many\ncombinations. \n\nThis also means that, like the BuzzFeed quizzes, the \noutput at the end is simply randomly chosen,\nso in fact, your ideal sandwhich doesn't actually tell you\nwhat serial killer you're most like. If you're looking for\nthat kind of information, maybe go see a therapist.\nIdk man, you do you"
+            );
+        
+    }
+    void secretButtonAction(){
+
     }
 
     String getSlogan(){
