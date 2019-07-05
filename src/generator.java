@@ -64,7 +64,7 @@ public class generator{
         return quiz;
     }
 
-    //Searches for a specified quiz part, so appropriate assetts can be located
+    //Searches for a specified quiz part, so appropriate assets can be located
     public int search(String listType, String searchTerm){
         int result = -1;
 

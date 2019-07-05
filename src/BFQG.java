@@ -29,13 +29,16 @@ import javax.swing.border.Border;
 
 public class BFQG {
 
+    //UI Components
     JFrame testFrame;
     JLabel randomQuizTestLabelPart1;
     JLabel randomQuizTestLabelPart2;
     JLabel randomQuizTestLabelPart3;
-    String slogan;
     JPanel randomQuizPanel;
 
+    //Other vars
+    String slogan;
+    String[] quiz;
 
     //Show or hide the frame
     void showHideFrame(boolean state) {
@@ -59,8 +62,7 @@ public class BFQG {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(testFrame,
-                    "Something appears to have fucked up with the music.\nI'm not going to force you to restart but like, music and shit. Pls?");
+            JOptionPane.showMessageDialog(testFrame,"Something appears to have fucked up with the music.\nI'm not going to force you to restart but like, music and shit. Pls?");
         }
     }
 
@@ -119,14 +121,13 @@ public class BFQG {
         randomQuizPanel.add(randomQuizTestLabelPart3);
 
         //Add randomQuizPanel to testFrame
-        //randomQuizPanel.pack();
         testFrame.add(randomQuizPanel, BorderLayout.CENTER);
         
-        
+        //Spacing panel
         JPanel spacingPanel = new JPanel();
         spacingPanel.setPreferredSize(new Dimension(700,200));
         
-        
+        //Button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(700, 300));
         buttonPanel.add(spacingPanel, BorderLayout.SOUTH);
@@ -142,6 +143,16 @@ public class BFQG {
                 newQuizButtonAction();
             }
             
+        });
+
+        //Take quiz button
+        JButton takeQuizButton = new JButton("Take this quiz");
+        takeQuizButton.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                takeQuizButtonAction();
+            }
         });
 
         //customQuiz button
@@ -174,11 +185,9 @@ public class BFQG {
             }
         });
 
-        secretButton.setFont(new Font(secretButton.getFont().getName(), Font.BOLD, secretButton.getFont().getSize()));
-
         //Add newQuizButton
         buttonPanel.add(newQuizButton);
-
+        buttonPanel.add(takeQuizButton);
         buttonPanel.add(customQuizButton);
         buttonPanel.add(aboutButton);
         buttonPanel.add(secretButton);
@@ -195,11 +204,15 @@ public class BFQG {
     void newQuizButtonAction(){
         //Create generator, get new quiz, set text in labels
         generator quizGen = new generator();
-        String[] quiz = quizGen.newQuiz();
+        quiz = quizGen.newQuiz();
         randomQuizTestLabelPart1.setText(quiz[0]);
         randomQuizTestLabelPart2.setText(" and we'll tell you ");        
         randomQuizTestLabelPart3.setText(quiz[1]);
     }
+
+    void takeQuizButtonAction(){
+
+    };
 
     void customQuizButtonAction(){;
         
