@@ -1,0 +1,7 @@
+Cleaner
+CEO
+Clerk
+Banker
+Programmer
+Memelord
+McSlave

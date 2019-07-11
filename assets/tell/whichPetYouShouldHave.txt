@@ -1,0 +1,7 @@
+Cat
+Dog
+Hamster
+Rabbit
+Rat
+Snake
+None
