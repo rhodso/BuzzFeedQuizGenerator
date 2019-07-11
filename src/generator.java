@@ -95,4 +95,76 @@ public class generator{
         return result;
     }
 
+    public String getNamingScheme(String input){
+        String returnVal = "";
+        if(input.equals("")){
+            return "";
+        }
+        
+        String[] inArray = input.split(" ");
+        for(int i = 0; i < inArray.length; i++){
+            if(i == 0){
+                inArray[i] = inArray[i].toLowerCase();
+                continue;
+            }
+            inArray[i] = inArray[i].substring(0, 1).toUpperCase() + inArray[i].substring(1);
+        }
+
+        for(String s : inArray){
+            returnVal = returnVal + s;
+        }
+
+        returnVal = returnVal.replace("'", "");
+                
+        return returnVal;
+    }
+
+    public void generatePickStructure(){
+        String[] fileOutArray;
+
+        try{
+            fileOutArray = pickList;
+
+            for(int i = 0; i < fileOutArray.length; i++){
+                fileOutArray[i] = getNamingScheme(fileOutArray[i]);
+            }
+
+            String baseFP = "assets/pick/";
+            for(String str : fileOutArray){
+                str = baseFP + str;
+                File f = new File(str);
+                f.mkdir();
+            }
+
+        }
+        catch(Exception e){
+            System.out.println("oShit");
+        }
+
+
+    }
+
+    public void generateTellStructure(){
+        String[] fileOutArray;
+        try{
+            fileOutArray = tellList;
+
+            for(int i = 0; i < fileOutArray.length; i++){
+                fileOutArray[i] = getNamingScheme(fileOutArray[i]);
+            }
+
+            String baseFP = "assets/tell/";
+            for(String str : fileOutArray){
+                
+                str = baseFP + str + ".txt";
+                File f = new File(str);
+                if(!f.exists()){
+                    f.createNewFile();
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("oShit");
+        }
+    }
 }

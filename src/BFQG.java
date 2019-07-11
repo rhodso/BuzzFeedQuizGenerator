@@ -131,7 +131,6 @@ public class BFQG {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(700, 300));
         buttonPanel.add(spacingPanel, BorderLayout.SOUTH);
-        
 
         //New Quiz Button
         JButton newQuizButton = new JButton("New quiz");
