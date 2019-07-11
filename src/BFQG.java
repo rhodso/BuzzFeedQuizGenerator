@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,6 +40,7 @@ public class BFQG {
     //Other vars
     String slogan;
     String[] quiz;
+    Boolean secret = false;
 
     //Show or hide the frame
     void showHideFrame(boolean state) {
@@ -67,9 +69,14 @@ public class BFQG {
     }
 
     //Constructor
-    public BFQG() {
-        //Get the slogan
-        slogan = getSlogan();
+    public BFQG(Boolean forceSlogan) {
+        if(forceSlogan){
+            slogan = "Up, Up, Down, Down, Left, Right, Left, Right, B, A, Start!";
+        }
+        else{
+            //Get the slogan
+            slogan = getSlogan();
+        }
 
         //Setup testFrame
         testFrame = new JFrame();
@@ -220,11 +227,46 @@ public class BFQG {
     void aboutButtonAction(){
         JOptionPane.showMessageDialog(testFrame,
             "This quiz was created by Richard Rhodes because he got bored\nIt creates a random quiz based on a 'pick' list, as in 'Pick\nyour ideal X', and a 'tell' list, as in 'and we'll tell you\nwhat X you are'. This means that the quiz comes up with a\nrandom quiz. It was made to mimic, and hence mock, the actual\nBuzzFeed quizzes, but was made so that there were many\ncombinations. \n\nThis also means that, like the BuzzFeed quizzes, the \noutput at the end is simply randomly chosen,\nso in fact, your ideal sandwhich doesn't actually tell you\nwhat serial killer you're most like. If you're looking for\nthat kind of information, maybe go see a therapist.\nIdk man, you do you"
-            );
+            , "About the quiz"
+            , JOptionPane.PLAIN_MESSAGE);
         
     }
     void secretButtonAction(){
-
+        if(slogan.equals("Up, Up, Down, Down, Left, Right, Left, Right, B, A, Start!")){
+            String code = JOptionPane.showInputDialog(testFrame, "Input the code:");
+            if(code.equals("Konami")){
+                JOptionPane.showMessageDialog(testFrame, "Secret correct\nEnjoy", "Secret Information", JOptionPane.WARNING_MESSAGE);
+                secret = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(testFrame, "Secret incorrect", "Secret Information", 0);
+                secret = false;
+            }
+            if(secret == true){
+                File secretFile = new File("assets/secretFile.txt");
+                if(secretFile.exists()){
+                    secretFile.delete();
+                }
+                try{
+                    FileWriter fw;
+                    secretFile.createNewFile();
+                    fw = new FileWriter(secretFile);
+                    if(secret){
+                        fw.write("1");
+                    }
+                    else{
+                        fw.write("0");
+                    }
+                    fw.close();
+                }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(testFrame, e.getMessage() + e.getCause(), "Exception occured", JOptionPane.ERROR_MESSAGE);
+                }
+        }
+        }
+        else{
+            JOptionPane.showMessageDialog(testFrame, "Not now", "Launch conditions incorrect", JOptionPane.OK_OPTION);
+        }
     }
 
     String getSlogan(){
@@ -263,7 +305,7 @@ public class BFQG {
 
     public static void main(String[] args) {
         //Create instance of BFQG, and then make it visible
-        BFQG bfqginstance = new BFQG();
+        BFQG bfqginstance = new BFQG(false);
         bfqginstance.showHideFrame(true);
     }
 }
