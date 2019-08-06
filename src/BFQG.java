@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -76,14 +78,11 @@ public class BFQG {
             slogan = getSlogan();
         }
 
-        secret = getSecretStatus();
         //Setup testFrame
         testFrame = new JFrame();
         testFrame.setSize(new Dimension(700, 500));
         testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testFrame.setLayout(new BorderLayout());
-
-        //testFrame.addKeyListener();
 
         //HeaderPanel
         JPanel headerPanel = new JPanel();
@@ -202,9 +201,6 @@ public class BFQG {
         //Add buttonPanel to testFrame
         testFrame.add(buttonPanel, BorderLayout.PAGE_END);
 
-        //KeyPress listeners
-        
-
         //Generate a new quiz, then start playing music
         newQuizButtonAction();
         playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
@@ -230,7 +226,7 @@ public class BFQG {
 
     void aboutButtonAction(){
         JOptionPane.showMessageDialog(testFrame,
-            "This quiz was created by Richard Rhodes because he got bored.\nIt creates a random quiz based on a 'pick' list, as in 'Pick\nyour ideal X', and a 'tell' list, as in 'and we'll tell you\nwhat X you are'. This means that the quiz comes up with a\nrandom quiz. It was made to mimic, and hence mock, the actual\nBuzzFeed quizzes, but was made so that there were many\ncombinations. \n\nThis also means that, like the BuzzFeed quizzes, the \noutput at the end is simply randomly chosen,\nso in fact, your ideal sandwhich doesn't actually tell you\nwhat serial killer you're most like. If you're looking for\nthat kind of information, maybe go see a therapist.\nIdk man, you do you"
+            "This quiz was created by Richard Rhodes because he got bored\nIt creates a random quiz based on a 'pick' list, as in 'Pick\nyour ideal X', and a 'tell' list, as in 'and we'll tell you\nwhat X you are'. This means that the quiz comes up with a\nrandom quiz. It was made to mimic, and hence mock, the actual\nBuzzFeed quizzes, but was made so that there were many\ncombinations. \n\nThis also means that, like the BuzzFeed quizzes, the \noutput at the end is simply randomly chosen,\nso in fact, your ideal sandwhich doesn't actually tell you\nwhat serial killer you're most like. If you're looking for\nthat kind of information, maybe go see a therapist.\nIdk man, you do you"
             , "About the quiz"
             , JOptionPane.PLAIN_MESSAGE);
         
@@ -246,7 +242,27 @@ public class BFQG {
                 JOptionPane.showMessageDialog(testFrame, "Secret incorrect", "Secret Information", 0);
                 secret = false;
             }
-            //TODO do something with secret;
+            if(secret == true){
+                File secretFile = new File("assets/secretFile.txt");
+                if(secretFile.exists()){
+                    secretFile.delete();
+                }
+                try{
+                    FileWriter fw;
+                    secretFile.createNewFile();
+                    fw = new FileWriter(secretFile);
+                    if(secret){
+                        fw.write("1");
+                    }
+                    else{
+                        fw.write("0");
+                    }
+                    fw.close();
+                }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(testFrame, e.getMessage() + e.getCause(), "Exception occured", JOptionPane.ERROR_MESSAGE);
+                }
+        }
         }
         else{
             JOptionPane.showMessageDialog(testFrame, "Not now", "Launch conditions incorrect", JOptionPane.OK_OPTION);
@@ -285,34 +301,6 @@ public class BFQG {
             //If error, return this
             return "Who even needs slogans?";
         }
-    }
-
-    boolean getSecretStatus(){
-        boolean res = false;
-        File secretFile = new File("assets/secretFile.txt");
-        if(!secretFile.exists()){
-            return false;
-        }
-        BufferedReader br;
-        try{
-            br = new BufferedReader(new FileReader(secretFile));
-
-            String fromFile = br.readLine();
-
-            if(fromFile.equals("1")){
-                res = true;
-            }
-            else{
-                res = false;
-            }
-
-            br.close();
-        }
-        catch(Exception e){
-            System.out.println("oShit");
-        }
-
-        return res;
     }
 
     public static void main(String[] args) {
