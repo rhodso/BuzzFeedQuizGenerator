@@ -11,6 +11,15 @@ public class generator{
     String[] pickList;
     String[] tellList;
 
+    public String[] getPick(){
+        return pickList;
+    }
+    
+    public String[] getTell(){
+        return tellList;
+    }
+    
+
     public generator(){
         //Create some vars to read from a file
         BufferedReader br;

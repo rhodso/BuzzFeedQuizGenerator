@@ -6,7 +6,7 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - BFQG",
+            "name": "Launch BFQG",
             "request": "launch",
             "mainClass": "BFQG",
             "projectName": "BuzzFeedQuizGenerator"
