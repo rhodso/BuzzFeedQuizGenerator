@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -81,11 +82,14 @@ public class BFQG {
             slogan = getSlogan();
         }
 
-        //Setup testFrame
+        //Setup mainFrame
+        ImageIcon img = new ImageIcon("assets/images/Bfqg_H.png");
         mainFrame = new JFrame();
         mainFrame.setSize(new Dimension(700, 500));
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
+        mainFrame.setIconImage(img.getImage());
+        mainFrame.setTitle("BuzzFeed Quiz Generator");
 
         //HeaderPanel
         JPanel headerPanel = new JPanel();
