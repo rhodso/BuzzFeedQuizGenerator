@@ -1,10 +1,21 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class question {
     int qNum;
@@ -16,16 +27,74 @@ public class question {
         0- Question
         1-4 Answers 1-4*/
 
-    JPanel bodyPanel;
+    //UI vars
+    JFrame mainFrame;
+    private JPanel randomQuizPanel;
+    private JLabel randomQuizTestLabelPart1;
+    private JLabel randomQuizTestLabelPart2;
+    private JLabel randomQuizTestLabelPart3;
+
 
     public void showHidePanel(boolean b){
-        bodyPanel.setVisible(b);
+        
     }
 
-    public question(String[] quiz, int questionNumber){
+    public question(String[] quiz, int questionNumber, int noOfQuestions) throws FileNotFoundException {
+        //Set question variables
         pick = quiz[0];
         tell = quiz[1];
         qNum = questionNumber;
+        questionParts = getQuestionParts(quiz);
+
+        if(questionParts[0] == "!!Failure!!"){
+            throw new FileNotFoundException("Question file: " + questionNumber + ".txt from quiz: " + pick + ". Not found");
+        }
+        
+        //Create UI
+        ImageIcon img = new ImageIcon("assets/images/Bfqg_H.png");
+        mainFrame = new JFrame("Question " + qNum);
+        mainFrame.setSize(new Dimension(700,500));
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLayout(new BorderLayout());
+        mainFrame.setIconImage(img.getImage());
+
+        //randomQuizPanel
+        randomQuizPanel = new JPanel();
+        GridLayout randomQuizGridLayout = new GridLayout(3,1);
+        randomQuizPanel.setLayout(randomQuizGridLayout);
+        randomQuizGridLayout.setHgap(20);
+        randomQuizPanel.setSize(new Dimension(700,100));
+        randomQuizPanel.setPreferredSize((new Dimension(700,100)));
+
+        //RandomQuizTestLabel P1
+        randomQuizTestLabelPart1 = new JLabel(quiz[0], SwingConstants.CENTER);
+        randomQuizTestLabelPart1.setFont(new Font(randomQuizTestLabelPart1.getFont().getName(), Font.BOLD, 16));
+        randomQuizPanel.add(randomQuizTestLabelPart1);
+
+        //RandomQuizTestLabel P2
+        randomQuizTestLabelPart2 = new JLabel("and we'll tell you", SwingConstants.CENTER);
+        randomQuizTestLabelPart2.setFont(new Font(randomQuizTestLabelPart2.getFont().getName(), Font.ITALIC, 14));
+        randomQuizPanel.add(randomQuizTestLabelPart2);
+
+        //RandomQuizTestLabel P3
+        randomQuizTestLabelPart3 = new JLabel(quiz[1], SwingConstants.CENTER);
+        randomQuizTestLabelPart3.setFont(new Font(randomQuizTestLabelPart3.getFont().getName(), Font.BOLD, 16));
+        randomQuizPanel.add(randomQuizTestLabelPart3);
+
+        //Add randomQuizPanel to testFrame
+        mainFrame.add(randomQuizPanel, BorderLayout.CENTER);
+            
+        //Spacing panel
+        JPanel spacingPanel = new JPanel();
+        spacingPanel.setPreferredSize(new Dimension(700,200));
+        mainFrame.add(spacingPanel);
+
+        JButton continueButton
+
+    }
+
+    public String[] getQuestionParts(String[] quiz){
+        String[] questionPartsArray = new String[5];
         g = new generator();
 
         //Read content from file
@@ -47,21 +116,64 @@ public class question {
             //And add to the array
             questionParts = new String[fileOut.size()];
             for(int i = 0; i < fileOut.size(); i++){
-                questionParts[i] = fileOut.get(i);
+                questionPartsArray[i] = fileOut.get(i);
             }
-
+            return questionPartsArray;
         }
         catch(IOException e){
-            System.out.println("Exception occured in generator.java\nMessage:\t" + e.getMessage());
+            String[] oShit = {"!!Failure!!"};
+            return oShit;
         }
     }
 
-    public int ask(){
-        int returnVar = 0;
+    private void continueQuestions(String[] quiz, int noOfQuestions) throws FileNotFoundException{
+        if(qNum == noOfQuestions){
 
-        System.out.println("Question " + qNum + "\n" + questionParts[0] + "\nA - " + questionParts[1] + "\nB - " + questionParts[2] + "\nC - " + questionParts[3] + "\nD - " + questionParts[4] + "\n\n");
+            //Vars
+            BufferedReader br;
+            ArrayList<String> fileOut = new ArrayList<>(0);
+            String[] sloganList;
+            String s;
+            String dir = "assets/tell/" + g.getNamingScheme(quiz[1]) + ".txt";
+            String quizAnswer; 
 
-        return returnVar;
-    }
+            try{
+                //Read from file
+                br = new BufferedReader(new FileReader(new File(dir)));
+                s = br.readLine();
+                while(s != null)
+                {
+                    fileOut.add(s);
+                    s = br.readLine();
+                }
+                br.close();
+                //And add to the array
+                sloganList = new String[fileOut.size()];
+                for(int i = 0; i < fileOut.size(); i++){
+                    sloganList[i] = fileOut.get(i);
+                }
     
+                //Pick random slogan
+                Random rng = new Random();
+                quizAnswer = sloganList[rng.nextInt(sloganList.length)];
+    
+            }
+            catch(Exception ex){
+                //If error, return this
+                quizAnswer = "Something went wrong lol. It doesn't even matter anyway";
+                System.out.println("Exception occured in BFQG.java\nMessage:\t" + ex.getMessage());
+            }
+
+            JOptionPane.showMessageDialog(mainFrame, quizAnswer, "Quiz Result", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            question q = new question(quiz, qNum+1, noOfQuestions);
+            q.ask();
+            this.mainFrame.setVisible(false);
+        }
+    }
+
+    public void ask() {
+        mainFrame.setVisible(true);
+    }    
 }

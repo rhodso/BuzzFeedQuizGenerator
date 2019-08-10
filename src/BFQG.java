@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
@@ -211,7 +212,7 @@ public class BFQG {
         //Generate a new quiz, then start playing music
         g = new generator();
         newQuizButtonAction();
-        playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
+        //playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
     }
 
     //Actual action for newQuizButton
@@ -246,50 +247,15 @@ public class BFQG {
             }
         }
         noOfQuestions = filesNum;
-        
-        this.showHideFrame(false);
-        for(int i = 0; i < noOfQuestions; i++){
-            question Q = new question(quiz, i+1);
-            Q.ask();
-        }
-        
-        //Vars
-        BufferedReader br;
-        ArrayList<String> fileOut = new ArrayList<>(0);
-        String[] sloganList;
-        String s;
-        String dir = "assets/tell/" + g.getNamingScheme(quiz[1]) + ".txt";
-        String quizAnswer;
+        //this.showHideFrame(false);
 
         try{
-            //Read slogans from file
-            br = new BufferedReader(new FileReader(new File(dir)));
-            s = br.readLine();
-            while(s != null)
-            {
-                fileOut.add(s);
-                s = br.readLine();
-            }
-            br.close();
-            //And add to the array
-            sloganList = new String[fileOut.size()];
-            for(int i = 0; i < fileOut.size(); i++){
-                sloganList[i] = fileOut.get(i);
-            }
-
-            //Pick random slogan
-            Random rng = new Random();
-            quizAnswer = sloganList[rng.nextInt(sloganList.length)];
-
+                question q = new question(quiz, 1, noOfQuestions);
+                q.ask();
         }
-        catch(Exception ex){
-            //If error, return this
-            quizAnswer = "Something went wrong lol. It doesn't even matter anyway";
-            System.out.println("Exception occured in BFQG.java\nMessage:\t" + ex.getMessage());
+        catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(mainFrame, "Question file not found. Please report this to the developer!\nMessage: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        this.showHideFrame(true);
-        JOptionPane.showMessageDialog(mainFrame, quizAnswer, "Quiz Result", JOptionPane.INFORMATION_MESSAGE);
     };
 
     void customQuizButtonAction(){;
