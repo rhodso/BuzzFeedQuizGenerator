@@ -66,6 +66,7 @@ public class question {
         randomQuizGridLayout.setHgap(20);
         randomQuizPanel.setSize(new Dimension(700,100));
         randomQuizPanel.setPreferredSize((new Dimension(700,100)));
+        randomQuizPanel.setBorder(BorderFactory.createEtchedBorder());
 
         //RandomQuizTestLabel P1
         randomQuizTestLabelPart1 = new JLabel(quiz[0], SwingConstants.CENTER);
@@ -84,19 +85,19 @@ public class question {
 
         //Add randomQuizPanel to testFrame
         mainFrame.add(randomQuizPanel, BorderLayout.CENTER);
-            
+        
         //Spacing panel
         JPanel spacingPanel = new JPanel();
         spacingPanel.setPreferredSize(new Dimension(700,50));
-        spacingPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        mainFrame.add(spacingPanel);
-        
+        spacingPanel.setBorder(BorderFactory.createEtchedBorder());
+        mainFrame.add(spacingPanel, BorderLayout.CENTER);
+
         JLabel questionTextLabel = new JLabel(questionParts[0]);
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(700, 200));
         buttonPanel.setLayout(new GridLayout(2, 2));
-        buttonPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        //buttonPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         JButton a1Button = new JButton(questionParts[1]);
         a1Button.setPreferredSize(new Dimension(150, 100));
@@ -155,8 +156,8 @@ public class question {
         buttonPanel.add(a3Button);
         buttonPanel.add(a4Button);
         
-        mainFrame.add(questionTextLabel, BorderLayout.CENTER);
-        mainFrame.add(spacingPanel, BorderLayout.SOUTH);
+        mainFrame.add(questionTextLabel, BorderLayout.SOUTH);
+        //mainFrame.add(spacingPanel, BorderLayout.SOUTH);
         mainFrame.add(buttonPanel, BorderLayout.SOUTH);
     }
 
