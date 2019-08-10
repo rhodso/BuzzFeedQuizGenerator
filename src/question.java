@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,12 +12,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 public class question {
     int qNum;
@@ -29,15 +35,10 @@ public class question {
 
     //UI vars
     JFrame mainFrame;
-    private JPanel randomQuizPanel;
-    private JLabel randomQuizTestLabelPart1;
-    private JLabel randomQuizTestLabelPart2;
-    private JLabel randomQuizTestLabelPart3;
-
-
-    public void showHidePanel(boolean b){
-        
-    }
+    JPanel randomQuizPanel;
+    JLabel randomQuizTestLabelPart1;
+    JLabel randomQuizTestLabelPart2;
+    JLabel randomQuizTestLabelPart3;
 
     public question(String[] quiz, int questionNumber, int noOfQuestions) throws FileNotFoundException {
         //Set question variables
@@ -86,44 +87,77 @@ public class question {
             
         //Spacing panel
         JPanel spacingPanel = new JPanel();
-        spacingPanel.setPreferredSize(new Dimension(700,200));
+        spacingPanel.setPreferredSize(new Dimension(700,50));
+        spacingPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         mainFrame.add(spacingPanel);
+        
+        JLabel questionTextLabel = new JLabel(questionParts[0]);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(700, 200));
+        buttonPanel.setLayout(new GridLayout(2, 2));
+        buttonPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-        JButton continueButton
-
-    }
-
-    public String[] getQuestionParts(String[] quiz){
-        String[] questionPartsArray = new String[5];
-        g = new generator();
-
-        //Read content from file
-        String dir = "assets/pick/" + g.getNamingScheme(quiz[0]) + "/" + qNum + ".txt";
-        BufferedReader br;
-        ArrayList<String> fileOut = new ArrayList<>(0);
-        String s;
-
-        try{
-            //Read pick topics from the pick list
-            br = new BufferedReader(new FileReader(new File(dir)));
-            s = br.readLine();
-            while(s != null)
-            {
-                fileOut.add(s);
-                s = br.readLine();
+        JButton a1Button = new JButton(questionParts[1]);
+        a1Button.setPreferredSize(new Dimension(150, 100));
+        a1Button.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    continueQuestions(quiz, noOfQuestions);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-            br.close();
-            //And add to the array
-            questionParts = new String[fileOut.size()];
-            for(int i = 0; i < fileOut.size(); i++){
-                questionPartsArray[i] = fileOut.get(i);
+        });
+
+        JButton a2Button = new JButton(questionParts[2]);
+        a2Button.setPreferredSize(new Dimension(150, 100));
+        a2Button.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    continueQuestions(quiz, noOfQuestions);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-            return questionPartsArray;
-        }
-        catch(IOException e){
-            String[] oShit = {"!!Failure!!"};
-            return oShit;
-        }
+        });
+
+        JButton a3Button = new JButton(questionParts[3]);
+        a3Button.setPreferredSize(new Dimension(150, 100));
+        a3Button.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    continueQuestions(quiz, noOfQuestions);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        JButton a4Button = new JButton(questionParts[4]);
+        a4Button.setPreferredSize(new Dimension(150, 100));
+        a4Button.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    continueQuestions(quiz, noOfQuestions);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        buttonPanel.add(a1Button);
+        buttonPanel.add(a2Button);
+        buttonPanel.add(a3Button);
+        buttonPanel.add(a4Button);
+        
+        mainFrame.add(questionTextLabel, BorderLayout.CENTER);
+        mainFrame.add(spacingPanel, BorderLayout.SOUTH);
+        mainFrame.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private void continueQuestions(String[] quiz, int noOfQuestions) throws FileNotFoundException{
@@ -163,13 +197,46 @@ public class question {
                 quizAnswer = "Something went wrong lol. It doesn't even matter anyway";
                 System.out.println("Exception occured in BFQG.java\nMessage:\t" + ex.getMessage());
             }
-
+            this.mainFrame.setVisible(false);
             JOptionPane.showMessageDialog(mainFrame, quizAnswer, "Quiz Result", JOptionPane.INFORMATION_MESSAGE);
         }
         else{
             question q = new question(quiz, qNum+1, noOfQuestions);
             q.ask();
             this.mainFrame.setVisible(false);
+        }
+    }
+
+    public String[] getQuestionParts(String[] quiz){
+        String[] questionPartsArray = new String[5];
+        g = new generator();
+
+        //Read content from file
+        String dir = "assets/pick/" + g.getNamingScheme(quiz[0]) + "/" + qNum + ".txt";
+        BufferedReader br;
+        ArrayList<String> fileOut = new ArrayList<>(0);
+        String s;
+
+        try{
+            //Read pick topics from the pick list
+            br = new BufferedReader(new FileReader(new File(dir)));
+            s = br.readLine();
+            while(s != null)
+            {
+                fileOut.add(s);
+                s = br.readLine();
+            }
+            br.close();
+            //And add to the array
+            questionParts = new String[fileOut.size()];
+            for(int i = 0; i < fileOut.size(); i++){
+                questionPartsArray[i] = fileOut.get(i);
+            }
+            return questionPartsArray;
+        }
+        catch(IOException e){
+            String[] oShit = {"!!Failure!!"};
+            return oShit;
         }
     }
 
