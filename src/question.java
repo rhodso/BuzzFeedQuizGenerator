@@ -101,7 +101,7 @@ public class question {
         questionTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton a1Button = new JButton(questionParts[1]);
-        a1Button.setPreferredSize(new Dimension(150, 100));
+        a1Button.setPreferredSize(new Dimension(350, 100));
         a1Button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -114,7 +114,7 @@ public class question {
         });
 
         JButton a2Button = new JButton(questionParts[2]);
-        a2Button.setPreferredSize(new Dimension(150, 100));
+        a2Button.setPreferredSize(new Dimension(350, 100));
         a2Button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -127,7 +127,7 @@ public class question {
         });
 
         JButton a3Button = new JButton(questionParts[3]);
-        a3Button.setPreferredSize(new Dimension(150, 100));
+        a3Button.setPreferredSize(new Dimension(350, 100));
         a3Button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -140,7 +140,7 @@ public class question {
         });
 
         JButton a4Button = new JButton(questionParts[4]);
-        a4Button.setPreferredSize(new Dimension(150, 100));
+        a4Button.setPreferredSize(new Dimension(350, 100));
         a4Button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {

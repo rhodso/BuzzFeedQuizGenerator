@@ -212,7 +212,7 @@ public class BFQG {
         //Generate a new quiz, then start playing music
         g = new generator();
         newQuizButtonAction();
-        //playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
+        playThatFunkyMusic("assets/music/Renegade_Jubilee_Wav.wav");
     }
 
     //Actual action for newQuizButton
