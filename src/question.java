@@ -1,18 +1,21 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,8 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 public class question {
     int qNum;
@@ -66,8 +67,7 @@ public class question {
         randomQuizGridLayout.setHgap(20);
         randomQuizPanel.setSize(new Dimension(700,100));
         randomQuizPanel.setPreferredSize((new Dimension(700,100)));
-        randomQuizPanel.setBorder(BorderFactory.createEtchedBorder());
-
+        
         //RandomQuizTestLabel P1
         randomQuizTestLabelPart1 = new JLabel(quiz[0], SwingConstants.CENTER);
         randomQuizTestLabelPart1.setFont(new Font(randomQuizTestLabelPart1.getFont().getName(), Font.BOLD, 16));
@@ -89,15 +89,16 @@ public class question {
         //Spacing panel
         JPanel spacingPanel = new JPanel();
         spacingPanel.setPreferredSize(new Dimension(700,50));
-        spacingPanel.setBorder(BorderFactory.createEtchedBorder());
         mainFrame.add(spacingPanel, BorderLayout.CENTER);
 
-        JLabel questionTextLabel = new JLabel(questionParts[0]);
-        
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(700, 200));
-        buttonPanel.setLayout(new GridLayout(2, 2));
-        //buttonPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        buttonPanel.setPreferredSize(new Dimension(700, 300));
+        buttonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        JLabel questionTextLabel = new JLabel(questionParts[0]);
+        questionTextLabel.setFont(new Font(questionTextLabel.getFont().getName(), Font.ITALIC, 20));
+        questionTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton a1Button = new JButton(questionParts[1]);
         a1Button.setPreferredSize(new Dimension(150, 100));
@@ -151,13 +152,30 @@ public class question {
             }
         });
 
-        buttonPanel.add(a1Button);
-        buttonPanel.add(a2Button);
-        buttonPanel.add(a3Button);
-        buttonPanel.add(a4Button);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        buttonPanel.add(questionTextLabel, c);
+        c.gridwidth = 1;
+
+        c.gridx = 0;
+        c.gridy = 1;
+        buttonPanel.add(a1Button, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
         
-        mainFrame.add(questionTextLabel, BorderLayout.SOUTH);
-        //mainFrame.add(spacingPanel, BorderLayout.SOUTH);
+        buttonPanel.add(a2Button, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        buttonPanel.add(a3Button, c);
+
+        c.gridx = 1;
+        c.gridy = 2;
+        buttonPanel.add(a4Button, c);
+        
         mainFrame.add(buttonPanel, BorderLayout.SOUTH);
     }
 
